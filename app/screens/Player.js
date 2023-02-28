@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
-import Screen from '../components/Screen';
-import color from '../misc/color';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
-import PlayerButton from '../components/PlayerButton';
-import { AudioContext } from '../context/AudioProvider';
+//  COMMENTED CODE HAS BEEN MOVED TO A SEPARATE FILE IN MISC FOLDER
+
+import React, { useContext, useEffect, useState } from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
+import Screen from "../components/Screen";
+import color from "../misc/color";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Slider from "@react-native-community/slider";
+import PlayerButton from "../components/PlayerButton";
+import { AudioContext } from "../context/AudioProvider";
 import {
   changeAudio,
   moveAudio,
@@ -13,11 +15,11 @@ import {
   play,
   playNext,
   resume,
-} from '../misc/audioController';
-import { convertTime, storeAudioForNextOpening } from '../misc/helper';
-import { selectAudio } from '../misc/audioController';
+} from "../misc/audioController";
+import { convertTime, storeAudioForNextOpening } from "../misc/helper";
+import { selectAudio } from "../misc/audioController";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 const Player = () => {
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -75,7 +77,7 @@ const Player = () => {
   };
 
   const handleNext = async () => {
-    await changeAudio(context, 'next');
+    await changeAudio(context, "next");
     // const { isLoaded } = await context.playbackObj.getStatusAsync();
     // const isLastAudio =
     //   context.currentAudioIndex + 1 === context.totalAudioCount;
@@ -116,7 +118,7 @@ const Player = () => {
   };
 
   const handlePrevious = async () => {
-    await changeAudio(context, 'previous');
+    await changeAudio(context, "previous");
     // const { isLoaded } = await context.playbackObj.getStatusAsync();
     // const isFirstAudio = context.currentAudioIndex <= 0;
     // let audio = context.audioFiles[context.currentAudioIndex - 1];
@@ -168,10 +170,10 @@ const Player = () => {
     <Screen>
       <View style={styles.container}>
         <View style={styles.audioCountContainer}>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: "row" }}>
             {context.isPlayListRunning && (
               <>
-                <Text style={{ fontWeight: 'bold' }}>From Playlist: </Text>
+                <Text style={{ fontWeight: "bold" }}>From Playlist: </Text>
                 <Text>{context.activePlayList.title}</Text>
               </>
             )}
@@ -182,7 +184,7 @@ const Player = () => {
         </View>
         <View style={styles.midBannerContainer}>
           <MaterialCommunityIcons
-            name='music-circle'
+            name="music-circle"
             size={300}
             color={context.isPlaying ? color.ACTIVE_BG : color.FONT_MEDIUM}
           />
@@ -193,9 +195,9 @@ const Player = () => {
           </Text>
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 15,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              paddingHorizontal: 20,
             }}
           >
             <Text>{convertTime(context.currentAudio.duration)}</Text>
@@ -210,7 +212,7 @@ const Player = () => {
             value={calculateSeebBar()}
             minimumTrackTintColor={color.FONT_MEDIUM}
             maximumTrackTintColor={color.ACTIVE_BG}
-            onValueChange={value => {
+            onValueChange={(value) => {
               setCurrentPosition(
                 convertTime(value * context.currentAudio.duration)
               );
@@ -221,22 +223,22 @@ const Player = () => {
               try {
                 await pause(context.playbackObj);
               } catch (error) {
-                console.log('error inside onSlidingStart callback', error);
+                console.log("error inside onSlidingStart callback", error);
               }
             }}
-            onSlidingComplete={async value => {
+            onSlidingComplete={async (value) => {
               await moveAudio(context, value);
               setCurrentPosition(0);
             }}
           />
           <View style={styles.audioControllers}>
-            <PlayerButton iconType='PREV' onPress={handlePrevious} />
+            <PlayerButton iconType="PREV" onPress={handlePrevious} />
             <PlayerButton
               onPress={handlePlayPause}
-              style={{ marginHorizontal: 25 }}
-              iconType={context.isPlaying ? 'PLAY' : 'PAUSE'}
+              style={{ marginHorizontal: 50 }}
+              iconType={context.isPlaying ? "PLAY" : "PAUSE"}
             />
-            <PlayerButton iconType='NEXT' onPress={handleNext} />
+            <PlayerButton iconType="NEXT" onPress={handleNext} />
           </View>
         </View>
       </View>
@@ -247,28 +249,29 @@ const Player = () => {
 const styles = StyleSheet.create({
   audioControllers: {
     width,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingBottom: 40,
+    paddingTop: 25,
   },
   audioCountContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingHorizontal: 15,
   },
   container: {
     flex: 1,
   },
   audioCount: {
-    textAlign: 'right',
-    color: color.FONT_LIGHT,
+    textAlign: "right",
+    color: color.GREY_FONT,
     fontSize: 14,
   },
   midBannerContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   audioTitle: {
     fontSize: 16,
